@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import shortid from "shortid";
+import { connect } from "react-redux";
 import { BlankPhonebook, Input, Button, Label } from "./Form.styles";
+import contactsActions from "../../redux/contacts/contacts-actions";
 
-export default function Form({ onSubmit }) {
+function Form({onSubmit}) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
@@ -31,13 +32,7 @@ export default function Form({ onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newContact = {
-      id: shortid.generate(),
-      name: name,
-      number: number,
-    };
-
-    onSubmit(newContact);
+    onSubmit(name, number);
     reset();
   };
 
@@ -70,4 +65,10 @@ export default function Form({ onSubmit }) {
       <Button>Add contact</Button>
     </BlankPhonebook>
   );
-}
+};
+
+const mapDispatchToProps = dispatch => ({
+  onSubmit: (name, number) => dispatch(contactsActions.add(name, number))
+});
+
+export default connect(null, mapDispatchToProps)(Form);
