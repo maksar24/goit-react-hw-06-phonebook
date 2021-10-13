@@ -11,7 +11,10 @@ const items = createReducer([], {
             return state;
         }
         return [payload, ...state];
-    }
+    },
+    [actions.remove]: (state, { payload }) => {
+        return state.filter(({ id }) => id !== payload);
+    },
 });
 
 const filter = createReducer('', {
